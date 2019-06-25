@@ -38,17 +38,23 @@ public class PortalScript : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Dointhis");
                     GameManager.Instance.NotEnoughFlies();
                 }
             }
         }
         else
         {
-            if(collision.gameObject.layer == Player)
+            if(Player == (Player | (1 << collision.gameObject.layer)))
             {
                 GameManager.Instance.NextScene();
             }
+        }
+    }
+    public void SetManager()
+    {
+        if (gameObject.name == "Portal2")
+        {
+            GameManager.Instance.Portal2 = this.gameObject;
         }
     }
 }

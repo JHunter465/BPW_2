@@ -3,7 +3,11 @@ guid: 4097750d7368e114aada05a63fa121b4
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - PlayerUIPrefab: {instanceID: 0}
+  - Player: {instanceID: 0}
+  - NewSpawnLocation: {instanceID: 0}
+  - Portal2: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

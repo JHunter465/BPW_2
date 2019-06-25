@@ -8,15 +8,14 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject PlayerUIPrefab = null;
-    [SerializeField] private GameObject Player = null;
-    [SerializeField] private GameObject StartUI = null;
-    [SerializeField] private GameObject CreditUI = null;
-    [SerializeField] private GameObject NewSpawnLocation = null;
-    [SerializeField] private GameObject Portal2 = null;
+    [SerializeField] public GameObject Player = null;
+    [SerializeField] public GameObject NewSpawnLocation = null;
+    [SerializeField] public GameObject Portal2 = null;
 
     private GameObject PlayerUIInstance = null;
     private GameObject FlyInstance = null;
     private bool StartCanvas = true;
+    private bool secretleveldone = false;
 
     public int FireFlyCount = 0;
 
@@ -63,20 +62,14 @@ public class GameManager : MonoBehaviour
 
     public void PreviousLevel()
     {
+        secretleveldone = true;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
-        Player.transform.position = NewSpawnLocation.transform.position;
-        List<GameObject> portalspawns = Portal2.GetComponent<PortalScript>().PortalSpawns;
-        foreach (GameObject spawns in portalspawns)
-        {
-            spawns.SetActive(true);
-        }
-        Portal2.GetComponent<PortalScript>().Fire.gameObject.SetActive(false);
+        StartCoroutine(SetPlayerPos());
     }
 
     public void EndLevel()
     {
-        PlayerUIInstance.SetActive(false);
-        CreditUI.SetActive(true);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 3);
     }
     public void NotEnoughFlies()
     {
@@ -87,23 +80,22 @@ public class GameManager : MonoBehaviour
         PlayerUIInstance.GetComponent<PlayerUI>().TellNoEnd(FireFlyCount);
     }
 
-    public void StartGame()
+    IEnumerator SetPlayerPos()
     {
-        StartCanvas = false;
-        StartCoroutine(FadeoutUI(StartUI));
-    }
-
-    IEnumerator FadeoutUI(GameObject _FadingUI)
-    {
-        List<GameObject> lijstje = _FadingUI.GetComponent<canvasScript>().UItoFade;
-        foreach (GameObject UI in lijstje)
+        if (secretleveldone)
         {
-            UI.SetActive(false);
+            FindObjectOfType<PlayerController>().SetManager();
+            FindObjectOfType<AttachtoManager>().attachToManager();
+            //FindObjectOfType<canvasScript>().SetManager();
+            FindObjectOfType<PortalScript>().SetManager();
+            Player.transform.position = NewSpawnLocation.transform.position;
+            List<GameObject> portalspawns = Portal2.GetComponent<PortalScript>().PortalSpawns;
+            foreach (GameObject spawns in portalspawns)
+            {
+                spawns.SetActive(true);
+            }
+            Portal2.GetComponent<PortalScript>().Fire.gameObject.SetActive(false);
         }
         yield return null;
-    }
-    public void quit()
-    {
-        Application.Quit();
     }
 }

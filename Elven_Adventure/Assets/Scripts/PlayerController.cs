@@ -132,4 +132,8 @@ public class PlayerController : MonoBehaviour
             maximumForce = jointMaxForce
         };
     }
+    public void SetManager()
+    {
+        GameManager.Instance.Player = this.gameObject;
+    }
 }
