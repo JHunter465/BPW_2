@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class EndLevel : MonoBehaviour
 {
@@ -24,7 +23,14 @@ public class EndLevel : MonoBehaviour
     {
         if (collision.collider.gameObject.layer == 9)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex +1);
+            if (GameManager.Instance.FireFlyCount > 10)
+            {
+                GameManager.Instance.EndLevel();
+            }
+            else
+            {
+                GameManager.Instance.NotEnoughFliesEnd();
+            }
         }
     }
 }
